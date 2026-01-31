@@ -1,0 +1,116 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_tutoom/main_section
+
+    This template renders the main section with improved accessibility and maintainability.
+
+    Example context (json):
+    {
+        "ismoderator": true,
+        "istextpluralparticipant": true,
+        "roomdate": "10:00 AM",
+        "roomid": "12345",
+        "roomidnotexists": true,
+        "participantscount": 0,
+        "error": false,
+        "errorcode": "ERROR_CODE",
+        "errormessage": "Error message text"
+    }
+}}
+
+{{#roomid}}
+    <div class="py-3" role="region" aria-label="{{#str}} view_message_session_status, mod_tutoom {{/str}}">
+        <div class="tutoom-status-indicator" aria-label="{{#str}} view_icon_status, mod_tutoom {{/str}}">
+            {{#pix}} icon-color_picker, mod_tutoom {{/pix}}
+            <span class="tutoom-status-text">{{#str}} view_message_session_status_on, mod_tutoom {{/str}}</span>
+        </div>
+        <div class="tutoom-status-indicator" aria-label="{{#str}} view_icon_clock, mod_tutoom {{/str}}">
+            {{#pix}} icon-clock, mod_tutoom {{/pix}}
+            <span class="tutoom-status-text">{{#str}} view_message_session_started_at, mod_tutoom {{/str}} {{roomdate}}</span>
+        </div>
+        <div class="tutoom-status-indicator" aria-label="{{#str}} view_icon_participants, mod_tutoom {{/str}}">
+            {{#pix}} icon-participants, mod_tutoom {{/pix}}
+            <span class="tutoom-status-text">
+                {{#participantscount}}
+                    {{participantscount}}
+                {{/participantscount}}
+                {{^participantscount}}
+                    0
+                {{/participantscount}}
+                {{#istextpluralparticipant}}
+                    {{#str}} view_message_users, mod_tutoom {{/str}}
+                {{/istextpluralparticipant}}
+                {{^istextpluralparticipant}}
+                    {{#str}} view_message_user, mod_tutoom {{/str}}
+                {{/istextpluralparticipant}}
+                {{#str}} view_message_conference_in_this_room, mod_tutoom {{/str}}
+            </span>
+        </div>
+    </div>
+{{/roomid}}
+
+{{^roomid}}
+    <div class="py-3" role="region">
+        {{#error}}
+            {{#errorcode}}
+                <p class="tutoom-warning" role="alert">
+                    <strong>{{#str}} error, core {{/str}}:</strong> {{errorcode}}. {{errormessage}}
+                </p>
+            {{/errorcode}}
+            {{#roomidnotexists}}
+                <p class="mb-0 mt-3">{{#str}} view_message_room_ended, mod_tutoom {{/str}}</p>
+            {{/roomidnotexists}}
+        {{/error}}
+        {{^error}}
+            {{#ismoderator}}
+                <div class="tutoom-status-indicator" aria-label="{{#str}} view_icon_status, mod_tutoom {{/str}}">
+                    {{#pix}} icon-color_picker-outline, mod_tutoom {{/pix}}
+                    <span class="tutoom-status-text">{{#str}} view_message_session_status_off, mod_tutoom {{/str}}</span>
+                </div>
+            {{/ismoderator}}
+            {{^ismoderator}}
+                <p class="mb-0">{{#str}} view_message_room_not_initalized, mod_tutoom {{/str}}</p>
+            {{/ismoderator}}
+        {{/error}}
+    </div>
+{{/roomid}}
+
+{{#roomid}}
+    <div class="py-3">
+        <button id="tutoom-join-button" class="btn btn-outline-dark tutoom-btn tutoom-btn-icon" aria-label="{{#str}} view_conference_action_join, mod_tutoom {{/str}}">
+            {{> mod_tutoom/icon_arrow_right }}
+            {{#str}} view_conference_action_join, mod_tutoom {{/str}}
+        </button>
+        {{#ismoderator}}
+            <button id="tutoom-end-button" class="btn btn-outline-danger tutoom-btn" value="{{roomid}}" aria-label="{{#str}} view_conference_action_end, mod_tutoom {{/str}}">
+                {{#str}} view_conference_action_end, mod_tutoom {{/str}}
+            </button>
+        {{/ismoderator}}
+    </div>
+{{/roomid}}
+
+{{^roomid}}
+    {{#ismoderator}}
+        <div class="py-3">
+            <button id="tutoom-start-button" class="btn btn-outline-dark tutoom-btn tutoom-btn-icon" aria-label="{{#str}} view_conference_action_start, mod_tutoom {{/str}}">
+                {{> mod_tutoom/icon_arrow_right }}
+                {{#str}} view_conference_action_start, mod_tutoom {{/str}}
+            </button>
+        </div>
+    {{/ismoderator}}
+{{/roomid}}

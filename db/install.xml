@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/tutoom/db" VERSION="20210208" COMMENT="XMLDB file for Moodle mod_tutoom"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+  <TABLES>
+    <TABLE NAME="tutoom" COMMENT="Stores the tutoom activity module instances.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Room type: 0=room+recordings, 1=room only, 2=recording only"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the course this activity is part of."/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="The name of the activity module instance"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp of when the instance was added to the course."/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp of when the instance was last modified."/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Activity description."/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The format of the intro field."/>
+        <FIELD NAME="groupid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="External group identifier for organizing rooms (maps to API groupId)"/>
+        <FIELD NAME="roomid" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Tutoom room UUID from API (null if room not yet created)"/>
+        <FIELD NAME="welcome_message" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Custom welcome message shown to participants"/>
+        <FIELD NAME="recording_enabled" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Whether recording is enabled for this room (0=disabled, 1=enabled)"/>
+        <FIELD NAME="recording_autostart" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Auto-start recording when first moderator joins (0=manual, 1=auto)"/>
+        <FIELD NAME="participants" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON-encoded participant role rules for determining moderator/viewer access"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+        <INDEX NAME="groupid" UNIQUE="false" FIELDS="groupid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="tutoom_logs" COMMENT="Stores room activity events and audit trail">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course ID"/>
+        <FIELD NAME="tutoomid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Tutoom activity instance ID"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="User ID who triggered the event"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Timestamp when event occurred"/>
+        <FIELD NAME="roomid" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Tutoom room UUID"/>
+        <FIELD NAME="event_type" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" COMMENT="Event type: CREATE_ROOM, JOIN_ROOM, END_ROOM"/>
+        <FIELD NAME="event_data" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Additional event metadata in JSON format"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="courseid" UNIQUE="false" FIELDS="courseid"/>
+        <INDEX NAME="event_type" UNIQUE="false" FIELDS="event_type"/>
+        <INDEX NAME="logrow" UNIQUE="false" FIELDS="courseid, tutoomid, userid, event_type"/>
+        <INDEX NAME="userlog" UNIQUE="false" FIELDS="userid, event_type"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

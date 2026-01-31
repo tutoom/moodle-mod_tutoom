@@ -1,0 +1,62 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_tutoom/recordings_pagination
+
+    This template renders the recordings pagination with improved accessibility.
+
+    Example context (json):
+    {
+        "pages": [{"number": 1, "isSelected": true}, {"number": 2, "isSelected": false}],
+        "disablePrevious": true,
+        "disableNext": false,
+        "currentPage": 1
+    }
+}}
+
+<nav class="tutoom-recordings-pagination" aria-label="{{#str}} recording_pagination, mod_tutoom {{/str}}" role="navigation">
+    <div class="tutoom-recordings-pagination-wrapper">
+        <input type="hidden" id="tutoom-recordings-current-page" value="{{currentPage}}">
+        <button
+            id="tutoom-recordings-btn-previous"
+            class="previous {{#disablePrevious}}disabled{{/disablePrevious}}"
+            {{#disablePrevious}}disabled aria-disabled="true"{{/disablePrevious}}
+            aria-label="{{#str}} recording_previous_page, mod_tutoom {{/str}}"
+        >
+            {{#str}} recording_previous, mod_tutoom {{/str}}
+        </button>
+        {{#pages}}
+            <button
+                class="btn-page {{#isSelected}}selected{{/isSelected}}"
+                name="btn-page"
+                value="{{number}}"
+                aria-label="{{#str}} recording_page, mod_tutoom {{/str}} {{number}}"
+                {{#isSelected}}aria-current="page"{{/isSelected}}
+            >
+                {{number}}
+            </button>
+        {{/pages}}
+        <button
+            id="tutoom-recordings-btn-next"
+            class="next {{#disableNext}}disabled{{/disableNext}}"
+            {{#disableNext}}disabled aria-disabled="true"{{/disableNext}}
+            aria-label="{{#str}} recording_next_page, mod_tutoom {{/str}}"
+        >
+            {{#str}} recording_next, mod_tutoom {{/str}}
+        </button>
+    </div>
+</nav>

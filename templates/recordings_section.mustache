@@ -1,0 +1,68 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_tutoom/recordings_section
+
+    This template renders the recordings section with improved accessibility.
+
+    Example context (json):
+    {
+        "isemptyrecordings": false,
+        "countrecordings": 0,
+        "recordings": []
+    }
+}}
+
+<div id="tutoom_view_recordings" class="py-3" role="region" aria-label="{{#str}} recording_title, mod_tutoom {{/str}}">
+    <div id="tutoom_view_recordings_header">
+        <h4>
+            {{#str}} recording_title, mod_tutoom {{/str}}
+            {{^isemptyrecordings}}({{countrecordings}}){{/isemptyrecordings}}
+        </h4>
+    </div>
+    <div id="tutoom_view_recordings_content">
+        <div class="tutoom-recordings-table">
+            <div class="tutoom-recordings-thead" role="row">
+                <h3 role="columnheader">{{#str}} recording_preview, mod_tutoom {{/str}}</h3>
+                <h3 role="columnheader">{{#str}} recording_duration, mod_tutoom {{/str}}</h3>
+                <h3 role="columnheader">{{#str}} recording_date, mod_tutoom {{/str}}</h3>
+                <h3 role="columnheader">{{#str}} recording_time, mod_tutoom {{/str}}</h3>
+            </div>
+
+            {{#isemptyrecordings}}
+                <div class="tutoom-empty-state" role="status" aria-live="polite">
+                    <img src='pix/icon-empty-recordings.svg' alt="{{#str}} view_icon_empty_recordings, mod_tutoom {{/str}}" class="tutoom-empty-state-image">
+                    <p class="tutoom-empty-state-text">{{#str}} recording_text_empty, mod_tutoom {{/str}}</p>
+                </div>
+            {{/isemptyrecordings}}
+
+            {{^isemptyrecordings}}
+                <div id="tutoom_view_recordings_loading" class="tutoom-loading" style="display: none;" role="status" aria-live="polite">
+                    <h3 class="tutoom-loading-text">
+                        {{#str}} recording_loading, mod_tutoom {{/str}}
+                    </h3>
+                </div>
+
+                <div id="tutoom-recordings-table-content" class="tutoom-recordings-tbody" role="list">
+                    {{>mod_tutoom/recordings_table_content}}
+                </div>
+            {{/isemptyrecordings}}
+        </div>
+
+        <div id="tutoom_view_recordings_pagination"></div>
+    </div>
+</div>
