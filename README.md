@@ -2,7 +2,7 @@
 
 Tutoom is a realtime collaborative whiteboard for teaching. The Tutoom plugin allows you to seamlessly create and join interactive whiteboard rooms directly within your Moodle courses.
 
-📚 **[Official Documentation](https://tutoom.com/help/articles/native-moodle-plugin)**
+📚 **[Official Documentation](https://tutoom.com/help/integrations/native-moodle-plugin)**
 
 ---
 
@@ -111,7 +111,7 @@ If you don't have API credentials yet:
 
 ## Support & Documentation
 
-- **Documentation**: [Tutoom Help Center - Moodle Plugin](https://tutoom.com/help/articles/native-moodle-plugin)
+- **Documentation**: [Tutoom Help Center - Moodle Plugin](https://tutoom.com/help/integrations/native-moodle-plugin)
 - **Help Center**: [tutoom.com/help](https://tutoom.com/help/)
 - **Commercial Support**: Contact us through the Help Center for enterprise support options
 
